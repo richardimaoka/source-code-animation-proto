@@ -2,7 +2,6 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { highlight } from "./shared";
-import { createHighlighter } from "shiki";
 
 type Props = {
   initialComponent: ReactNode;
@@ -36,7 +35,6 @@ function appendSourceCode(
 
 export function CodeBlockClientNew(props: Props) {
   const [appendedLines, setAppendedLines] = useState(0);
-  const [highlighter, setHighlighter] = useState<>(null);
   const diffLines = getDiff(props.initialSourceCode, props.finalSourceCode);
   const currentSourceCode = appendSourceCode(
     props.initialSourceCode,
