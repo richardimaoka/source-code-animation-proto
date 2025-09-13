@@ -5,18 +5,13 @@ import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 
-export async function CodeBlockServer() {
-  const sourceCodeStr = await readFile(
-    process.cwd() + "/app/makeReadOnly.ts",
-    "utf8"
-  );
-
-  const htmlStr = await codeToHast(sourceCodeStr, {
+async function toJsx(initialSourceCode: string) {
+  const hast = await codeToHast(initialSourceCode, {
     lang: "ts",
     theme: "github-dark",
   });
 
-  const initial = toJsxRuntime(htmlStr, {
+  return toJsxRuntime(hast, {
     Fragment,
     jsx,
     jsxs,
@@ -25,7 +20,29 @@ export async function CodeBlockServer() {
       pre: (props) => <pre data-custom-codeblock {...props} />,
     },
   });
+}
+
+export async function CodeBlockServer() {
+  const finalSourceCode = await readFile(
+    process.cwd() + "/app/makeReadOnly.ts",
+    "utf8"
+  );
+
+  // take the first nLines
+  const nLines = 4;
+  const initialSourceCode = finalSourceCode
+    .split("\n")
+    .slice(0, nLines)
+    .join("\n");
+
+  const initialJsx = await toJsx(initialSourceCode);
 
   // `initial` is optional.
-  return <CodeBlockClient initial={initial} sourceCodeStr={sourceCodeStr} />;
+  return (
+    <CodeBlockClient
+      initial={initialJsx}
+      initialSourceCode={finalSourceCode}
+      finalSourceCode={finalSourceCode}
+    />
+  );
 }
