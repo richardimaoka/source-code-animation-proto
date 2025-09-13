@@ -49,7 +49,7 @@ export function CodeBlockClient(props: Props) {
     if (appendedLines < diffLines.length) {
       const timer = setTimeout(() => {
         setAppendedLines((prev) => prev + 1);
-      }, 10);
+      }, 0);
       return () => clearTimeout(timer);
     }
   }, [appendedLines, diffLines.length]);
