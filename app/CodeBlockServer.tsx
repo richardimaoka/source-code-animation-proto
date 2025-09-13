@@ -1,9 +1,9 @@
-import { CodeBlockClient } from "./CodeBlockClient";
 import { readFile } from "fs/promises";
 import { codeToHast } from "shiki";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
+import { CodeBlockClientNew } from "./CodeBlockClientNew";
 
 async function toJsx(initialSourceCode: string) {
   const hast = await codeToHast(initialSourceCode, {
@@ -29,7 +29,7 @@ export async function CodeBlockServer() {
   );
 
   // take the first nLines
-  const nLines = 4;
+  const nLines = 8;
   const initialSourceCode = finalSourceCode
     .split("\n")
     .slice(0, nLines)
@@ -39,9 +39,9 @@ export async function CodeBlockServer() {
 
   // `initial` is optional.
   return (
-    <CodeBlockClient
-      initial={initialJsx}
-      initialSourceCode={finalSourceCode}
+    <CodeBlockClientNew
+      initialComponent={initialJsx}
+      initialSourceCode={initialSourceCode}
       finalSourceCode={finalSourceCode}
     />
   );

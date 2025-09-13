@@ -2,6 +2,7 @@
 
 import { ReactNode, useEffect, useState } from "react";
 import { highlight } from "./shared";
+import { createHighlighter } from "shiki";
 
 type Props = {
   initialComponent: ReactNode;
@@ -14,6 +15,8 @@ function getDiff(initialSourceCode: string, finalSourceCode: string): string[] {
   const finalLines = finalSourceCode.split("\n");
   const diffLines: string[] = [];
 
+  console.log("initialLines.length", initialLines.length);
+  console.log("finalLines.length", finalLines.length);
   for (let i = initialLines.length; i < finalLines.length; i++) {
     diffLines.push(finalLines[i]);
   }
@@ -31,14 +34,27 @@ function appendSourceCode(
   );
 }
 
-function CodeBlockClientNew(props: Props) {
+export function CodeBlockClientNew(props: Props) {
   const [appendedLines, setAppendedLines] = useState(0);
+  const [highlighter, setHighlighter] = useState<>(null);
   const diffLines = getDiff(props.initialSourceCode, props.finalSourceCode);
   const currentSourceCode = appendSourceCode(
     props.initialSourceCode,
     diffLines,
     appendedLines
   );
+
+  useEffect(() => {
+    console.log(
+      `useEffect appendedLines=${appendedLines} diffLines.length=${diffLines.length}`
+    );
+    if (appendedLines < diffLines.length) {
+      const timer = setTimeout(() => {
+        setAppendedLines((prev) => prev + 1);
+      }, 10);
+      return () => clearTimeout(timer);
+    }
+  }, [appendedLines, diffLines.length]);
 
   if (appendedLines === 0) {
     return props.initialComponent;
