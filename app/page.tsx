@@ -1,26 +1,13 @@
-import type { BundledLanguage } from "shiki";
-import { codeToHtml } from "shiki";
+import { CodeBlock } from "./CodeBlock";
+import { highlight } from "./shared";
 
-export default function Page() {
+export default async function Page() {
+  // `initial` is optional.
   return (
     <main>
-      <CodeBlock lang="ts">
-        {['console.log("Hello")', 'console.log("World")'].join("\n")}
-      </CodeBlock>
+      <CodeBlock
+        initial={await highlight('console.log("Rendered on server")', "ts")}
+      />
     </main>
   );
-}
-
-interface Props {
-  children: string;
-  lang: BundledLanguage;
-}
-
-async function CodeBlock(props: Props) {
-  const out = await codeToHtml(props.children, {
-    lang: props.lang,
-    theme: "github-dark",
-  });
-
-  return <div dangerouslySetInnerHTML={{ __html: out }} />;
 }
