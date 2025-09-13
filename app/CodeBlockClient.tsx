@@ -33,7 +33,7 @@ function appendSourceCode(
   );
 }
 
-export function CodeBlockClientNew(props: Props) {
+export function CodeBlockClient(props: Props) {
   const [appendedLines, setAppendedLines] = useState(0);
   const diffLines = getDiff(props.initialSourceCode, props.finalSourceCode);
   const currentSourceCode = appendSourceCode(

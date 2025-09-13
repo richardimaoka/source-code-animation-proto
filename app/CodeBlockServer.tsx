@@ -3,7 +3,7 @@ import { codeToHast } from "shiki";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { Fragment } from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
-import { CodeBlockClientNew } from "./CodeBlockClientNew";
+import { CodeBlockClient } from "./CodeBlockClient";
 
 async function toJsx(initialSourceCode: string) {
   const hast = await codeToHast(initialSourceCode, {
@@ -39,7 +39,7 @@ export async function CodeBlockServer() {
 
   // `initial` is optional.
   return (
-    <CodeBlockClientNew
+    <CodeBlockClient
       initialComponent={initialJsx}
       initialSourceCode={initialSourceCode}
       finalSourceCode={finalSourceCode}
