@@ -22,7 +22,7 @@ export default defineConfig({
   platform: 'browser',
   target: 'es2015',
   banner: {
-    js: `;
+    js: \`;
   /**
    * Copyright (c) Meta Platforms, Inc. and affiliates.
    *
@@ -36,8 +36,7 @@ export default defineConfig({
    * @preserve-invariant-messages
    */
 
-  ("use no memo");
-  `,
+  ("use no memo");\`,
   },
 });`;
   // `initial` is optional.
